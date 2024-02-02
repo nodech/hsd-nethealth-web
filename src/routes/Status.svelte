@@ -46,6 +46,9 @@
   $: if (data) {
     dns = countNodes(data.dnsSeeds);
     nodes = countNodes(data.nodes);
+  } else {
+    dns = null;
+    nodes = null;
   }
 </script>
 
