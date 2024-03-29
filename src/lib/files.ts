@@ -6,51 +6,86 @@ export type FileDefinition = {
   REFETCH_INTERVAL: number
 }
 
-export type GeneralStatuses = {
+export type NodesGeneral = {
   timestamp: number,
   reachable: number,
-  dnsSeeds: {
-    [key: string]: boolean
-  },
-  nodes: {
-    [key: string]: boolean
-  }
+  up: number,
+  total: number,
 }
 
-export const GENERAL_STATUSES: FileDefinition = {
+export const NODES_GENERAL: FileDefinition = {
   ID: 'app:seednodes',
-  FILE: () => './data/general-statuses.json',
+  FILE: () => './data/nodes/general.json',
   // REFETCH_INTERVAL: 1000 * 60 * 5, // 5 minutes
-  REFETCH_INTERVAL: 1000 * 10, // 10 seconds
+  // REFETCH_INTERVAL: 1000 * 10, // 10 seconds
+  REFETCH_INTERVAL: 0
 };
 
-export type MainPage = {
+export type DNSGeneral = {
   timestamp: number,
-  reachable: number,
-  lastMessage: number,
-  totalLogged: number,
-  SPV: number,
-  pruned: number,
-  treeCompacted: number,
-  countries: {
-    [key: string]: number
-  },
-  versions: {
-    [key: string]: number
-  },
+  up: number,
+  total: number,
+}
 
+export const DNS_GENERAL: FileDefinition = {
+  ID: 'app:dns-general',
+  FILE: () => './data/dns/general.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10
+  // REFETCH_INTERVAL: 1000 * 10, // 10 seconds
+  // REFETCH_INTERVAL: 0
 };
 
-export const MAIN_PAGE: FileDefinition = {
-  ID: 'app:mainpage',
-  FILE: () => './data/main.json',
-  // REFETCH_INTERVAL: 1000 * 60 * 5, // 5 minutes
-  REFETCH_INTERVAL: 1000 * 30, // 10 seconds
+export type TimeEntries = {
+  timestamp: number,
+  data: {
+    [key: number]: number
+  }
 };
 
-export const IP_PAGE: FileDefinition = {
-  ID: 'app:ip',
-  FILE: (hostname?: string) => `./data/nodes/${hostname}.json`,
-  // REFETCH_INTERVAL: 1000 * 60 * 5, // 5 minutes
-  REFETCH_INTERVAL: 1000 * 30, // 10 seconds
+export type DNSDay = TimeEntries;
+export type DNSMonth = TimeEntries;
+export type DNS3Months = TimeEntries;
+export type DNSYear = TimeEntries;
+
+export const DNS_DAY_10m: FileDefinition = {
+  ID: 'app:dns-day',
+  FILE: () => './data/dns/up10m-1day.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10
+};
+
+export const DNS_MONTH_HOURLY: FileDefinition = {
+  ID: 'app:dns-month-hourly',
+  FILE: () => './data/dns/upHourly-1month.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10
+};
+
+export const DNS_3MONTHS_DAILY: FileDefinition = {
+  ID: 'app:dns-3months-daily',
+  FILE: () => './data/dns/upDaily-3months.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10
+};
+
+export const DNS_YEAR_DAILY: FileDefinition = {
+  ID: 'app:dns-year-daily',
+  FILE: () => './data/dns/upDaily-1year.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10
+};
+
+export type DNSStatus = {
+  timestamp: number,
+  lastUp: number,
+  lastStatus: {
+    info: {
+      time: number,
+      hostname: string,
+      error: string | null,
+      result: string | null
+    }
+  }
+};
+
+export const DNS_STATUS_BY_HOST: FileDefinition = {
+  ID: 'app:dns-status-by-host',
+  FILE: (hostname?: string) => `./data/dns/stats-info/${hostname}.json`,
+  REFETCH_INTERVAL: 1000 * 60 * 10
 };
