@@ -5,13 +5,15 @@ type SimpleTooltipOptions = {
 
 export function simpleTooltip(node: SVGElement, options: SimpleTooltipOptions) {
   const { tooltipDiv } = options;
+  const paddingLeft = 25;
+  const paddingTop = 25;
 
   let x;
   let y;
 
   function mouseOver(event: MouseEvent) {
-    x = event.pageX + 15;
-    y = event.pageY + 15;
+    x = event.pageX + paddingLeft;
+    y = event.pageY + paddingTop;
     tooltipDiv.innerHTML = node.dataset.title || '';
     tooltipDiv.style.left = x + 'px';
     tooltipDiv.style.top = y + 'px';
@@ -19,8 +21,8 @@ export function simpleTooltip(node: SVGElement, options: SimpleTooltipOptions) {
   }
 
   function mouseMove(event: MouseEvent) {
-    x = event.pageX + 15;
-    y = event.pageY + 15;
+    x = event.pageX + paddingLeft;
+    y = event.pageY + paddingTop;
     tooltipDiv.style.left = x + 'px';
     tooltipDiv.style.top = y + 'px';
   }

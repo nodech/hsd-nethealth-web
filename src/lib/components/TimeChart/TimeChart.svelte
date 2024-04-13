@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { ProgressRadial } from '@skeletonlabs/skeleton';
   import { getLines } from '$lib/utils/charts';
   import { formatTime } from '$lib/utils/time';
   import { simpleTooltip } from './TimeChartTooltip'
@@ -8,6 +8,7 @@
 
   export let options: TimeChartOptionsPartial = DEFAULT_VALUES;
   export let data: TimeChartData = {};
+  export let loading = false;
 
   let fullOptions: TimeChartOptions = timeChartOptions(options);
   let height: TimeChartOptions['style']['height'];
@@ -183,14 +184,16 @@
 
   // setup tooltip
   let tooltipDiv: HTMLDivElement | null = null;
-
-  onMount(() => {
-    console.log(tooltipDiv);
-  });
 </script>
 
-<div class="tooltip" bind:this={tooltipDiv}></div>
+<div class="tooltip card" bind:this={tooltipDiv}></div>
 <div class="container" style="height: {height}px">
+  <div
+    class:invisible={!loading}
+    class="absolute -top-10 left-0 w-full h-full flex items-center justify-center"
+  >
+    <ProgressRadial meter="stroke-primary-500" track="stroke-primary-500/30" strokeLinecap="butt" />
+  </div>
   <svg
     width="{width}px"
     height="{height}px"
@@ -216,16 +219,16 @@
       <line class="stroke" x1="{xLine.x1}" y1="{xLine.y}" x2="{xLine.x2}" y2="{xLine.y}" />
       {#each xBoxes as box}
         {#if tooltipDiv}
-        <rect
-          class="time-box"
-          data-title={getInfoByIndex(box.index)}
-          x="{box.x2}" y="{YAxis.style.marginTop}"
-          width="{box.width}" height="{height - XAxis.style.marginBottom - YAxis.style.marginTop}"
-          fill="gray"
-          use:simpleTooltip={{tooltipDiv}}
-        >
-        </rect>
-          <!-- use:simpleTooltip={{ title: getInfoByIndex(box.index), tooltipDiv: tooltipDiv }} -->
+          <rect
+            class="time-box"
+            class:pointer-events-none={loading}
+            data-title={getInfoByIndex(box.index)}
+            x="{box.x2}" y="{YAxis.style.marginTop}"
+            width="{box.width}" height="{height - XAxis.style.marginBottom - YAxis.style.marginTop}"
+            fill="gray"
+            use:simpleTooltip={{tooltipDiv}}
+          >
+          </rect>
         {/if}
 
         {#if box.index % 3 === 0}
@@ -290,7 +293,6 @@
   .tooltip {
     position: fixed;
     z-index: 100;
-    background-color: rgba(var(--theme-background-color-base));
     border: 1px solid rgba(var(--theme-font-color-base));
     padding: 5px;
     border-radius: 5px;

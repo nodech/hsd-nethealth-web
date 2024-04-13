@@ -97,19 +97,22 @@ export const DEFAULT_VALUES: TimeChartOptions = {
   }
 };
 
-export function timeChartOptions(options: RecursivePartial<TimeChartOptions> = {}): TimeChartOptions {
+export function timeChartOptions(
+  options: RecursivePartial<TimeChartOptions> = {},
+  defaults = DEFAULT_VALUES
+): TimeChartOptions {
   const yaxis: YAxisOptions = {
-    ...DEFAULT_VALUES.YAxis, ...options.YAxis,
-    style: { ...DEFAULT_VALUES.YAxis.style, ...options.YAxis?.style }
+    ...defaults.YAxis, ...options.YAxis,
+    style: { ...defaults.YAxis.style, ...options.YAxis?.style }
   };
 
   const xaxis: TimeAxis = {
-    ...DEFAULT_VALUES.XAxis, ...options.XAxis,
-    style: { ...DEFAULT_VALUES.XAxis.style, ...options.XAxis?.style }
+    ...defaults.XAxis, ...options.XAxis,
+    style: { ...defaults.XAxis.style, ...options.XAxis?.style }
   };
 
   return {
-    style: { ...DEFAULT_VALUES.style, ...options.style },
+    style: { ...defaults.style, ...options.style },
     YAxis: yaxis,
     XAxis: xaxis
   };
@@ -167,7 +170,6 @@ export class TimeLine {
   }
 
   get diff(): number {
-    console.log(this.max, this.min);
     return this.max - this.min;
   }
 

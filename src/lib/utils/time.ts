@@ -17,7 +17,7 @@ export function formatTime(time: number): string {
   return intl.format(date);
 }
 
-export function formatDate(time: number, options: Intl.DateTimeFormatOptions): string {
+export function formatDate(time: number, options?: Intl.DateTimeFormatOptions): string {
   const date = new Date(time);
   const intl = new Intl.DateTimeFormat(undefined, options);
   return intl.format(date);

@@ -20,7 +20,7 @@
     minute: 'numeric'
   };
 
-  const tooOld = Date.now() - HOUR;
+  const stale = Date.now() - HOUR;
 
   const fetchStatus = async (id: string) => {
     try {
@@ -32,7 +32,7 @@
   };
 
   const getStatusColor = (status?: DNSStatus) => {
-    if (!status || status.timestamp < tooOld) {
+    if (!status || status.timestamp < stale) {
       return "bg-gray-500";
     }
 
@@ -52,7 +52,7 @@
       return false;
     }
 
-    return status.lastStatus.info.error || status.timestamp < tooOld;
+    return status.lastStatus.info.error || status.timestamp < stale;
   };
 
   const fetchAll = async () => {

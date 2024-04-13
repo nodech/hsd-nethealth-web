@@ -48,26 +48,20 @@ export type DNS3Months = TimeEntries;
 export type DNSYear = TimeEntries;
 
 export const DNS_DAY_10m: FileDefinition = {
-  ID: 'app:dns-day',
-  FILE: () => './data/dns/up10m-1day.json',
+  ID: 'app:dns-day-10m',
+  FILE: () => './data/dns/up-day-10m.json',
   REFETCH_INTERVAL: 1000 * 60 * 10
 };
 
-export const DNS_MONTH_HOURLY: FileDefinition = {
-  ID: 'app:dns-month-hourly',
-  FILE: () => './data/dns/upHourly-1month.json',
+export const DNS_WEEK_HOUR: FileDefinition = {
+  ID: 'app:dns-week-hour',
+  FILE: () => './data/dns/up-week-hour.json',
   REFETCH_INTERVAL: 1000 * 60 * 10
 };
 
-export const DNS_3MONTHS_DAILY: FileDefinition = {
-  ID: 'app:dns-3months-daily',
-  FILE: () => './data/dns/upDaily-3months.json',
-  REFETCH_INTERVAL: 1000 * 60 * 10
-};
-
-export const DNS_YEAR_DAILY: FileDefinition = {
-  ID: 'app:dns-year-daily',
-  FILE: () => './data/dns/upDaily-1year.json',
+export const DNS_5MONTHS_DAY: FileDefinition = {
+  ID: 'app:dns-5months-day',
+  FILE: () => './data/dns/up-5months-day.json',
   REFETCH_INTERVAL: 1000 * 60 * 10
 };
 

@@ -27,7 +27,8 @@
   const dnsStatusLoading = writable(true);
   const nodesGeneral = writable(null as (NodesGeneral | null));
   const dnsGeneral = writable(null as (DNSGeneral | null));
-  let interval: ReturnType<typeof setInterval>;
+  let intervalDNS: ReturnType<typeof setInterval>;
+  let intervalNodes: ReturnType<typeof setInterval>;
 
   const fetchDNSGeneral = async () => {
     $dnsStatusLoading = true;
@@ -60,27 +61,25 @@
 
   fetchAll().catch(console.error);
 
-  // setContext('generalStatus', nodesGeneral);
-  // setContext('generalStatusLoading', nodesStatusLoading);
-
   onMount(() => {
     setInitialClassState();
 
     if (DNS_GENERAL.REFETCH_INTERVAL > 0) {
-      interval = setInterval(() => {
+      intervalDNS = setInterval(() => {
         fetchDNSGeneral().catch(console.error);
       }, DNS_GENERAL.REFETCH_INTERVAL);
     }
 
     if (NODES_GENERAL.REFETCH_INTERVAL > 0) {
-      interval = setInterval(() => {
+      intervalNodes = setInterval(() => {
         fetchGeneral().catch(console.error);
       }, NODES_GENERAL.REFETCH_INTERVAL);
     }
   });
 
   onDestroy(() => {
-    clearInterval(interval);
+    clearInterval(intervalDNS);
+    clearInterval(intervalNodes);
   });
 
   const conicStops: ConicStop[] = [
