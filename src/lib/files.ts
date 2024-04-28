@@ -29,9 +29,9 @@ export type NodesGeneral = {
 export const NODES_GENERAL: FileDefinition = {
   ID: 'app:seednodes',
   FILE: () => './data/nodes/general.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10, // 10 minutes
   // REFETCH_INTERVAL: 1000 * 60 * 5, // 5 minutes
   // REFETCH_INTERVAL: 1000 * 10, // 10 seconds
-  REFETCH_INTERVAL: 0
 };
 
 export type DNSGeneral = {

@@ -1,54 +1,37 @@
 <script lang="ts">
-  import { onDestroy, setContext } from 'svelte';
-  import { writable } from 'svelte/store';
+  /*
+  import { onMount, onDestroy, setContext } from 'svelte';
+  */
 
-  import { ProgressBar } from '@skeletonlabs/skeleton';
-
-  import { fetchFile } from '$lib/utils/fetch';
-  import type { MainPage } from '$lib/files';
-  import { MAIN_PAGE } from '$lib/files';
-
-  import Countries from './Countries.svelte';
   import Versions from './Versions.svelte';
 
-  const loading = writable(true);
-  const main = writable(null as (MainPage | null));
-
-  const fetchMain = () => {
-    $loading = true;
-
-    fetchFile(MAIN_PAGE)
-      .then((response) => response.json())
-      .then((data) => {
-        $loading = false;
-        $main = data;
-      })
-      .catch((error) => console.error(error));
-  };
-
-  setContext('mainPage', main);
-
-  const interval = setInterval(fetchMain, MAIN_PAGE.REFETCH_INTERVAL);
-  fetchMain();
-
-  onDestroy(() => {
-    clearInterval(interval);
-  });
-
-  const classes = "md:w-1/2 xl:w-1/3 card m-3";
+  const classes = "card m-3 mt-3 md:m-0";
 </script>
 
-{#if $loading}
-  <div class="flex justify-center h-3">
-    <ProgressBar height="h-1" />
-  </div>
-{/if}
+<div class="flex justify-center h-3">
+<!-- {#if $loading} -->
+<!--     <ProgressBar height="h-1" /> -->
+<!-- {/if} -->
+</div>
 
-<div class="md:flex">
+<!--
+  max-w-screen-sm  max-width: 640px;
+  max-w-screen-md  max-width: 768px;
+  max-w-screen-lg  max-width: 1024px;
+  max-w-screen-xl  max-width: 1280px;
+  max-w-screen-2xl max-width: 1536px;
+-->
+
+<div class="md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2">
+  <!-- <div class="{classes}"> -->
+  <!--   <div class="h-11 text-center text-2xl font-bold">Countries</div> -->
+  <!--   <Countries /> -->
+  <!-- </div> -->
   <div class="{classes}">
-    <Countries />
+    <div class="text-center text-2xl font-bold">Versions</div>
+    <Versions />
   </div>
   <div class="{classes}">
-    <Versions />
+    <div class="text-center text-2xl font-bold">Place Holder</div>
   </div>
 </div>

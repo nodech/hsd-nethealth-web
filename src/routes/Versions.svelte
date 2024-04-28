@@ -15,15 +15,17 @@
 
   import type { ConicStop } from '@skeletonlabs/skeleton';
 
-  import { getContext } from 'svelte';
-  import type { Writable, Readable } from 'svelte/store';
+  import type { Writable } from 'svelte/store';
 
-  import type { MainPage } from '$lib/files';
-  import { percent } from '$lib/format';
+  import type { NodesGeneral } from '$lib/files';
+
   import {
     getVersionColor,
     getCSSFromHSL
   } from '$lib/utils/color';
+
+  import { percent } from '$lib/format';
+  import { nodes } from '$lib/stores/general';
 
   type VersionTreeIndex = {
     [major: string]: {
@@ -45,7 +47,7 @@
     children: VersionTreeEntry[]
   };
 
-  function indexTree(versions: MainPage['versions'], isWhite: boolean = false) {
+  function indexTree(versions: NodesGeneral['upCounts']['version'], isWhite: boolean = false) {
     const tree: VersionTreeIndex = {};
     const majors: Map<string, number> = new Map();
     const minors: Map<string, number> = new Map();
@@ -188,7 +190,7 @@
 
   const treeFormat = (label: string, value: number) => `v${label} - ${percent(value, total)} (${value})`;
 
-  let versions: MainPage['versions'] = {};
+  let versions: NodesGeneral['upCounts']['version'] = {};
   let versionTree: VersionTreeEntry[] = [];
   let total = 0;
   let conicStops: ConicStop[] = [];
@@ -196,19 +198,16 @@
   type VersionView = 'list' | 'tree' | 'piechart';
   const versionView: Writable<VersionView> = localStorageStore('mainPageVersionView', 'list');
 
-  const mainPage = getContext<Readable<MainPage>>('mainPage');
-
-  $: if ($mainPage) {
+  $: if ($nodes.general) {
     const isWhite = $modeCurrent;
-    versions = $mainPage.versions;
-    total = $mainPage.reachable;
+    versions = $nodes.general.upCounts.version;
+    total = $nodes.general.upCounts.total;
     versionTree = indexTree(versions, isWhite);
     conicStops = genConicStops(versionTree, total);
   }
 </script>
 
 <div class="flex flex-nowrap h-11">
-  <div class="flex-1 text-center text-2xl font-bold">Versions</div>
   <div class="flex-initial grow-0">
     <RadioGroup display="flex" border="border-token border-surface-200-700-token" background="">
       <RadioItem
