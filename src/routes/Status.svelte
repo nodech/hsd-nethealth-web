@@ -1,32 +1,13 @@
 <script lang="ts">
-  import type { GeneralStatuses } from "$lib/files";
+  import type { NodesGeneral, DNSGeneral } from "$lib/files";
+  import { isStale } from "$lib/utils/time";
 
-  export let data:GeneralStatuses | null;
+  export let nodes:NodesGeneral | null;
+  export let dns:DNSGeneral | null;
 
-  function countNodes(entry: Record<string, boolean>) {
-    let count = 0;
-    let reachable = 0;
-
-    for (const value of Object.values(entry)) {
-      count++;
-
-      if (value === true)
-        reachable++;
-    }
-    return {
-      count,
-      reachable
-    }
-  }
-
-  type CountNodes = ReturnType<typeof countNodes>;
-  type NullOrCount = CountNodes | null;
-
-  function getColor(entry: NullOrCount) {
-    if (!entry)
+  function getColor(percent: number | null, time:number = 0) {
+    if (!percent || isStale(time))
       return 'variant-ringed';
-
-    const percent = entry.reachable / entry.count;
 
     if (percent === 1)
       return 'bg-green-500';
@@ -40,25 +21,31 @@
     return 'bg-red-500';
   }
 
-  let nodes: NullOrCount = null;
-  let dns: NullOrCount = null;
+  let nodesFinal: number | null = null;
+  let dnsFinal: number | null = null;
 
-  $: if (data) {
-    dns = countNodes(data.dnsSeeds);
-    nodes = countNodes(data.nodes);
+  $: if (dns) {
+    dnsFinal = dns.up / dns.total;
   } else {
-    dns = null;
-    nodes = null;
+    dnsFinal = null;
+  }
+
+  $: if (nodes) {
+    nodesFinal = nodes.seeds.statuses.reduce((acc, status) => {
+      return acc + Number(status.isUp);
+    }, 0) / nodes.seeds.statuses.length;
+  } else {
+    nodesFinal = null;
   }
 </script>
 
 <span class="badge variant-soft-primary">
   <a href="/seeds">
-    <i class="btn-icon w-2 text-sm mr-2 {getColor(nodes)}" /> seeds
+    <i class="btn-icon w-2 text-sm mr-2 {getColor(nodesFinal, nodes?.timestamp)}" /> seeds
   </a>
 </span>
 <span class="badge variant-soft-primary">
   <a href="/dns">
-    <i class="btn-icon w-2 text-sm mr-2 {getColor(dns)}" /> dns
+    <i class="btn-icon w-2 text-sm mr-2 {getColor(dnsFinal, dns?.timestamp)}" /> dns
   </a>
 </span>

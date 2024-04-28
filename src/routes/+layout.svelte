@@ -13,49 +13,47 @@
   } from '@skeletonlabs/skeleton';
 
   import { onMount, onDestroy } from 'svelte';
-  import { writable } from 'svelte/store';
 
-  import type { NodesGeneral, DNSGeneral } from '$lib/files';
-
+  import { isStale } from '$lib/utils/time';
   import { fetchFile } from '$lib/utils/fetch';
-  import HSDLogo from '$lib/components/Logos/HSD.svelte';
+
   import { DNS_GENERAL, NODES_GENERAL } from '$lib/files';
 
+  import HSDLogo from '$lib/components/Logos/HSD.svelte';
   import Status from './Status.svelte';
 
-  const nodesStatusLoading = writable(true);
-  const dnsStatusLoading = writable(true);
-  const nodesGeneral = writable(null as (NodesGeneral | null));
-  const dnsGeneral = writable(null as (DNSGeneral | null));
-  let intervalDNS: ReturnType<typeof setInterval>;
-  let intervalNodes: ReturnType<typeof setInterval>;
+  import { dns, nodes } from '$lib/stores/general';
 
-  const fetchDNSGeneral = async () => {
-    $dnsStatusLoading = true;
+  let dnsInterval = null as (ReturnType<typeof setInterval> | null)
+  let nodesInterval = null as (ReturnType<typeof setInterval> | null)
+
+  const fetchDNS = async () => {
+    $dns.loading = true;
 
     try {
-      const data = await fetchFile(DNS_GENERAL)
-      $dnsGeneral = data;
+      const data = await fetchFile(DNS_GENERAL);
+      $dns.general = data;
     } finally {
-      $dnsStatusLoading = false;
+      $dns.loading = false;
     }
   };
 
-  const fetchGeneral = async () => {
-    $nodesStatusLoading = true;
+  const fetchNodes = async () => {
+    $nodes.loading = true;
 
     try {
-      const data = await fetchFile(NODES_GENERAL)
-      $nodesGeneral = data;
+      const data = await fetchFile(NODES_GENERAL);
+      $nodes.general = data;
     } finally {
-      $nodesStatusLoading = false;
+      $nodes.loading = false;
     }
   };
+
 
   const fetchAll = async () => {
     return Promise.all([
-      fetchDNSGeneral(),
-      fetchGeneral()
+      fetchDNS(),
+      fetchNodes()
     ]);
   };
 
@@ -65,21 +63,24 @@
     setInitialClassState();
 
     if (DNS_GENERAL.REFETCH_INTERVAL > 0) {
-      intervalDNS = setInterval(() => {
-        fetchDNSGeneral().catch(console.error);
+      dnsInterval = setInterval(() => {
+        fetchDNS().catch(console.error);
       }, DNS_GENERAL.REFETCH_INTERVAL);
     }
 
     if (NODES_GENERAL.REFETCH_INTERVAL > 0) {
-      intervalNodes = setInterval(() => {
-        fetchGeneral().catch(console.error);
+      nodesInterval = setInterval(() => {
+        fetchNodes().catch(console.error);
       }, NODES_GENERAL.REFETCH_INTERVAL);
     }
   });
 
   onDestroy(() => {
-    clearInterval(intervalDNS);
-    clearInterval(intervalNodes);
+    if (dnsInterval)
+      clearInterval(dnsInterval);
+
+    if (nodesInterval)
+      clearInterval(nodesInterval);
   });
 
   const conicStops: ConicStop[] = [
@@ -96,18 +97,20 @@
           <HSDLogo />
         </a>
         <span class="text-xl uppercase" title="Reachable Nodes">Nodes:
-          {#if $nodesGeneral?.reachable}
-            <span class="text-green-500">{$nodesGeneral?.reachable}</span>
+          {#if $nodes.general?.upCounts?.total}
+            <span
+              class:text-green-500={!isStale($nodes?.general?.timestamp)}
+            > {$nodes?.general?.upCounts?.total}</span>
           {:else}
             -
           {/if}
         </span>
       </svelte:fragment>
-      {#if $nodesStatusLoading || $dnsStatusLoading}
+      {#if $nodes.loading || $dns.loading}
         <ConicGradient width="w-5 space-y-0" stops={conicStops} spin />
       {/if}
       <svelte:fragment slot="trail">
-        <Status nodes={$nodesGeneral} dns={$dnsGeneral} />
+        <Status nodes={$nodes.general} dns={$dns.general} />
         <a
           class="btn-icon btn-icon-md hover:variant-soft-primary"
           href="https://github.com/nodech/hsd-nethealth-web"

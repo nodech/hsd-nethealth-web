@@ -22,3 +22,7 @@ export function formatDate(time: number, options?: Intl.DateTimeFormatOptions): 
   const intl = new Intl.DateTimeFormat(undefined, options);
   return intl.format(date);
 }
+
+export function isStale(time: number): boolean {
+  return time < (Date.now() - HOUR);
+}

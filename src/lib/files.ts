@@ -8,9 +8,22 @@ export type FileDefinition = {
 
 export type NodesGeneral = {
   timestamp: number,
-  reachable: number,
-  up: number,
-  total: number,
+  upCounts: {
+    total: number,
+    spv: number,
+    compacted: number,
+    pruned: number,
+    canSync: number,
+    version: { [key: string]: number }
+  },
+  seeds: {
+    version: "string",
+    statuses: {
+      host: string,
+      port: string,
+      isUp: boolean,
+    }[]
+  }
 }
 
 export const NODES_GENERAL: FileDefinition = {
@@ -31,8 +44,6 @@ export const DNS_GENERAL: FileDefinition = {
   ID: 'app:dns-general',
   FILE: () => './data/dns/general.json',
   REFETCH_INTERVAL: 1000 * 60 * 10
-  // REFETCH_INTERVAL: 1000 * 10, // 10 seconds
-  // REFETCH_INTERVAL: 0
 };
 
 export type TimeEntries = {
@@ -41,11 +52,6 @@ export type TimeEntries = {
     [key: number]: number
   }
 };
-
-export type DNSDay = TimeEntries;
-export type DNSMonth = TimeEntries;
-export type DNS3Months = TimeEntries;
-export type DNSYear = TimeEntries;
 
 export const DNS_DAY_10m: FileDefinition = {
   ID: 'app:dns-day-10m',
