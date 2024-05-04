@@ -4,15 +4,11 @@
   */
 
   import Versions from './Versions.svelte';
+  import ActiveNodes from './ActiveNodes.svelte';
+  import ActiveNodesGraph from './ActiveNodesGraph.svelte'
 
-  const classes = "card m-3 mt-3 md:m-0";
+  const classes = "m-3 md:m-0 md:mt-2";
 </script>
-
-<div class="flex justify-center h-3">
-<!-- {#if $loading} -->
-<!--     <ProgressBar height="h-1" /> -->
-<!-- {/if} -->
-</div>
 
 <!--
   max-w-screen-sm  max-width: 640px;
@@ -28,10 +24,19 @@
   <!--   <Countries /> -->
   <!-- </div> -->
   <div class="{classes}">
-    <div class="text-center text-2xl font-bold">Versions</div>
-    <Versions />
+    <div class="card">
+      <ActiveNodes />
+    </div>
+  </div>
+  <div class="{classes} md:col-span-1 xl:col-span-2">
+    <div class="card">
+      <ActiveNodesGraph />
+      ..
+    </div>
   </div>
   <div class="{classes}">
-    <div class="text-center text-2xl font-bold">Place Holder</div>
+    <div class="card">
+      <Versions />
+    </div>
   </div>
 </div>

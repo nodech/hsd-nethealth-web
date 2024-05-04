@@ -1,3 +1,5 @@
+import type { NodeEntry } from '$lib/entry';
+
 type FilePath = ((input?: string) => string);
 
 export type FileDefinition = {
@@ -5,6 +7,18 @@ export type FileDefinition = {
   FILE: FilePath,
   REFETCH_INTERVAL: number
 }
+
+export type NodesGeneralStatuses = {
+  isUp: boolean,
+  lastUp: ReturnType<typeof NodeEntry.prototype.toJSON> | null,
+  lastStatus: ReturnType<typeof NodeEntry.prototype.toJSON>
+};
+
+export type NodesGeneralStatusList = {
+  [host: string]: {
+    [port: string]: NodesGeneralStatuses
+  }
+};
 
 export type NodesGeneral = {
   timestamp: number,
@@ -16,13 +30,16 @@ export type NodesGeneral = {
     canSync: number,
     version: { [key: string]: number }
   },
-  seeds: {
-    version: "string",
-    statuses: {
-      host: string,
-      port: string,
-      isUp: boolean,
-    }[]
+  version: "string",
+  mainSeeds: {
+    total: number,
+    up: number,
+    statuses: NodesGeneralStatusList
+  },
+  generatedSeeds: {
+    total: number,
+    up: number,
+    statuses: NodesGeneralStatusList
   }
 }
 

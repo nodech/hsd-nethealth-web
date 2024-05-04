@@ -31,9 +31,7 @@
   }
 
   $: if (nodes) {
-    nodesFinal = nodes.seeds.statuses.reduce((acc, status) => {
-      return acc + Number(status.isUp);
-    }, 0) / nodes.seeds.statuses.length;
+    nodesFinal = nodes.mainSeeds.up / nodes.mainSeeds.total;
   } else {
     nodesFinal = null;
   }

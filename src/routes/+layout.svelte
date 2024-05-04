@@ -14,7 +14,7 @@
 
   import { onMount, onDestroy } from 'svelte';
 
-  import { isStale } from '$lib/utils/time';
+  import { isStale, formatDateTime } from '$lib/utils/time';
   import { fetchFile } from '$lib/utils/fetch';
 
   import { DNS_GENERAL, NODES_GENERAL } from '$lib/files';
@@ -96,7 +96,7 @@
         <a href="/">
           <HSDLogo />
         </a>
-        <span class="text-xl uppercase" title="Reachable Nodes">Nodes:
+        <span class="text-xs sm:text-sm md:text-xl uppercase" title="Reachable Nodes">Nodes:
           {#if $nodes.general?.upCounts?.total}
             <span
               class:text-green-500={!isStale($nodes?.general?.timestamp)}
@@ -125,6 +125,19 @@
   </svelte:fragment>
   <!-- Page Route Content -->
   <div class="container mx-auto">
+    <div class="flex justify-left min-h-5">
+      {#if $nodes?.general}
+        <div class="text-sm text-gray-500">
+          Last Updated:
+          <span
+            class:text-green-800={!isStale($nodes.general.timestamp)}
+            class:text-gray-700={isStale($nodes.general.timestamp)}
+          >
+            {formatDateTime($nodes.general.timestamp)}
+          </span>
+        </div>
+      {/if}
+    </div>
     <slot />
   </div>
 </AppShell>

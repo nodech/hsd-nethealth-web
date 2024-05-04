@@ -2,7 +2,7 @@
   import { ProgressRadial } from '@skeletonlabs/skeleton';
   import { getLines } from '$lib/utils/charts';
   import { formatTime } from '$lib/utils/time';
-  import { simpleTooltip } from './TimeChartTooltip'
+  import { simpleTooltip } from '../Tooltip'
   import type { TimeChartOptionsPartial, TimeChartOptions, TimeChartData } from './TimeChart';
   import { DEFAULT_VALUES, timeChartOptions, TimeLine, getPathForData } from './TimeChart';
 
@@ -186,7 +186,7 @@
   let tooltipDiv: HTMLDivElement | null = null;
 </script>
 
-<div class="tooltip card" bind:this={tooltipDiv}></div>
+<div class="card" bind:this={tooltipDiv}></div>
 <div class="container" style="height: {height}px">
   <div
     class:invisible={!loading}
@@ -288,15 +288,5 @@
 
   .time-box:hover {
     opacity: 0.2;
-  }
-
-  .tooltip {
-    position: fixed;
-    z-index: 100;
-    border: 1px solid rgba(var(--theme-font-color-base));
-    padding: 5px;
-    border-radius: 5px;
-    pointer-events: none;
-    display: none;
   }
 </style>

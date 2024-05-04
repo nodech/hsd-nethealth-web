@@ -24,7 +24,7 @@
     getCSSFromHSL
   } from '$lib/utils/color';
 
-  import { percent } from '$lib/format';
+  import { percent } from '$lib/utils/format';
   import { nodes } from '$lib/stores/general';
 
   type VersionTreeIndex = {
@@ -194,6 +194,7 @@
   let versionTree: VersionTreeEntry[] = [];
   let total = 0;
   let conicStops: ConicStop[] = [];
+  let loading = true;
 
   type VersionView = 'list' | 'tree' | 'piechart';
   const versionView: Writable<VersionView> = localStorageStore('mainPageVersionView', 'list');
@@ -204,44 +205,55 @@
     total = $nodes.general.upCounts.total;
     versionTree = indexTree(versions, isWhite);
     conicStops = genConicStops(versionTree, total);
+    loading = false;
   }
 </script>
 
-<div class="flex flex-nowrap h-11">
-  <div class="flex-initial grow-0">
-    <RadioGroup display="flex" border="border-token border-surface-200-700-token" background="">
-      <RadioItem
-        active="variant-ghost-primary"
-        hover="hover:variant-soft-primary"
-        bind:group={$versionView}
-        name="view"
-        value={"list"}
-      >
-        <i class="fa-solid fa-list text-xs"></i>
-      </RadioItem>
-      <RadioItem
-        active="variant-ghost-primary"
-        hover="hover:variant-soft-primary"
-        bind:group={$versionView}
-        name="view"
-        value={"tree"}
-      >
-        <i class="fa-solid fa-bars-staggered text-xs"></i>
-      </RadioItem>
-      <RadioItem
-        active="variant-ghost-primary"
-        hover="hover:variant-soft-primary"
-        bind:group={$versionView}
-        name="view"
-        value={"piechart"}
-      >
-        <i class="fa-solid fa-chart-pie text-xs"></i>
-      </RadioItem>
-    </RadioGroup>
+<div class="flex flex-row min-h-14 items-center">
+  <div class="flex-1"></div>
+  <div class="text-2xl font-bold">Versions</div>
+  <div class="flex-1 flex justify-end">
+    <div class="flex flex-nowrap h-11">
+      <div class="flex-initial grow-0">
+        <RadioGroup display="flex" border="border-token border-surface-200-700-token" background="">
+          <RadioItem
+            active="variant-ghost-primary"
+            hover="hover:variant-soft-primary"
+            bind:group={$versionView}
+            name="view"
+            value={"list"}
+          >
+            <i class="fa-solid fa-list text-xs"></i>
+          </RadioItem>
+          <RadioItem
+            active="variant-ghost-primary"
+            hover="hover:variant-soft-primary"
+            bind:group={$versionView}
+            name="view"
+            value={"tree"}
+          >
+            <i class="fa-solid fa-bars-staggered text-xs"></i>
+          </RadioItem>
+          <RadioItem
+            active="variant-ghost-primary"
+            hover="hover:variant-soft-primary"
+            bind:group={$versionView}
+            name="view"
+            value={"piechart"}
+          >
+            <i class="fa-solid fa-chart-pie text-xs"></i>
+          </RadioItem>
+        </RadioGroup>
+      </div>
+    </div>
   </div>
 </div>
 
-{#if $versionView == 'list'}
+{#if loading}
+  <div class="text-center">Loading...</div>
+{/if}
+
+{#if $versionView == 'list' && !loading}
 <div class="table-container">
   <table class="table table-hover">
     <thead>
@@ -264,7 +276,7 @@
 </div>
 {/if}
 
-{#if $versionView == 'tree'}
+{#if $versionView == 'tree' && !loading}
   <TreeView open={false} {...treeStyles}>
     {#each versionTree as major}
       <TreeViewItem>
@@ -290,7 +302,7 @@
   </TreeView>
 {/if}
 
-{#if $versionView == 'piechart'}
+{#if $versionView == 'piechart' && !loading}
   <div class="flex justify-center">
     <ConicGradient width="w-48" stops={conicStops} legend></ConicGradient>
   </div>

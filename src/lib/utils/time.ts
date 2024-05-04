@@ -23,6 +23,21 @@ export function formatDate(time: number, options?: Intl.DateTimeFormatOptions): 
   return intl.format(date);
 }
 
+export function formatDateTime(time: number): string {
+  const date = new Date(time);
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  };
+
+  const intl = new Intl.DateTimeFormat(undefined, options);
+  return intl.format(date);
+}
+
 export function isStale(time: number): boolean {
   return time < (Date.now() - HOUR);
 }
