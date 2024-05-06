@@ -16,8 +16,7 @@
   import type { ConicStop } from '@skeletonlabs/skeleton';
 
   import type { Writable } from 'svelte/store';
-
-  import type { NodesGeneral } from '$lib/files';
+  import type { UpCounts } from '$lib/types';
 
   import {
     getVersionColor,
@@ -47,7 +46,7 @@
     children: VersionTreeEntry[]
   };
 
-  function indexTree(versions: NodesGeneral['upCounts']['version'], isWhite: boolean = false) {
+  function indexTree(versions: UpCounts['version'], isWhite: boolean = false) {
     const tree: VersionTreeIndex = {};
     const majors: Map<string, number> = new Map();
     const minors: Map<string, number> = new Map();
@@ -190,7 +189,7 @@
 
   const treeFormat = (label: string, value: number) => `v${label} - ${percent(value, total)} (${value})`;
 
-  let versions: NodesGeneral['upCounts']['version'] = {};
+  let versions: UpCounts['version'] = {};
   let versionTree: VersionTreeEntry[] = [];
   let total = 0;
   let conicStops: ConicStop[] = [];
@@ -221,7 +220,7 @@
             hover="hover:variant-soft-primary"
             bind:group={$versionView}
             name="view"
-            value={"list"}
+            value={'list'}
           >
             <i class="fa-solid fa-list text-xs"></i>
           </RadioItem>
@@ -230,7 +229,7 @@
             hover="hover:variant-soft-primary"
             bind:group={$versionView}
             name="view"
-            value={"tree"}
+            value={'tree'}
           >
             <i class="fa-solid fa-bars-staggered text-xs"></i>
           </RadioItem>
@@ -239,7 +238,7 @@
             hover="hover:variant-soft-primary"
             bind:group={$versionView}
             name="view"
-            value={"piechart"}
+            value={'piechart'}
           >
             <i class="fa-solid fa-chart-pie text-xs"></i>
           </RadioItem>

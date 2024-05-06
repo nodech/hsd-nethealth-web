@@ -1,4 +1,4 @@
-import type { FileDefinition } from '$lib/files';
+import type { FileDefinition } from '$lib/files/types';
 
 export async function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

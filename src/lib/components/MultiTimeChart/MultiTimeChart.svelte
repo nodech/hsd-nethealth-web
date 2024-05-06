@@ -1,26 +1,27 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy } from 'svelte';
   import {
     RadioGroup,
     RadioItem,
-  } from "@skeletonlabs/skeleton";
+  } from '@skeletonlabs/skeleton';
 
   import type {
     ViewDefinition,
     ViewLabel,
     ViewMap
-  } from "./MultiTimeChart";
+  } from './MultiTimeChart';
 
   import type {
     TimeChartOptions,
     TimeChartData
   } from '$lib/components/TimeChart/TimeChart';
 
-  import { timeChartOptions } from "$lib/components/TimeChart/TimeChart";
-  import TimeChart from "$lib/components/TimeChart/TimeChart.svelte";
+  import { timeChartOptions } from '$lib/components/TimeChart/TimeChart';
+  import TimeChart from '$lib/components/TimeChart/TimeChart.svelte';
 
-  import { fetchFile } from "$lib/utils/fetch";
-  import type { TimeEntries, FileDefinition } from "$lib/files";
+  import { fetchFile } from '$lib/utils/fetch';
+  import type { FileDefinition } from '$lib/files/types';
+  import type { TimeEntries } from '$lib/types';
 
   // Props.
   export let title: string;

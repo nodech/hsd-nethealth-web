@@ -1,11 +1,11 @@
 <script lang="ts">
   import { nodes } from '$lib/stores/general'
 
-  import type { NodesGeneral } from '$lib/files'
+  import type { UpCounts } from '$lib/types';
   import { percent } from '$lib/utils/format'
 
   let loading = true;
-  let upCounts = null as NodesGeneral['upCounts'] | null;
+  let upCounts = null as UpCounts | null;
 
   $: if ($nodes.general) {
     upCounts = $nodes.general.upCounts

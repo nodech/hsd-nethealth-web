@@ -3,11 +3,11 @@
   import { onMount, onDestroy, setContext } from 'svelte';
   */
 
-  import Versions from './Versions.svelte';
   import ActiveNodes from './ActiveNodes.svelte';
   import ActiveNodesGraph from './ActiveNodesGraph.svelte'
+  import Versions from './Versions.svelte';
 
-  const classes = "m-3 md:m-0 md:mt-2";
+  const classes = 'm-3 md:m-0 md:mt-2';
 </script>
 
 <!--
@@ -31,7 +31,6 @@
   <div class="{classes} md:col-span-1 xl:col-span-2">
     <div class="card">
       <ActiveNodesGraph />
-      ..
     </div>
   </div>
   <div class="{classes}">

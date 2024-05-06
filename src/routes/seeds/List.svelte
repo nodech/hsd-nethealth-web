@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { NodesGeneralStatusList } from "$lib/files";
-  import { NodeEntry } from "$lib/entry";
+  import type { NodesGeneralStatusList } from '$lib/types';
+  import { NodeEntry } from '$lib/entry';
   import { simpleTooltip } from '$lib/components/Tooltip';
   import { formatNumber } from '$lib/utils/format';
-  import { formatDateTime } from "$lib/utils/time";
+  import { formatDateTime } from '$lib/utils/time';
 
   export let statuses: NodesGeneralStatusList | null = null;
   export let title: string;
@@ -59,7 +59,7 @@
       info.push(`Full: ${!entry.lastUp.result.pruned ? 'Yes' : 'No'}`);
       info.push(`Tree: ${!entry.lastUp.result.treeCompacted ? 'Yes' : 'No'}`);
     } else {
-      info.push(`Unknown status`);
+      info.push('Unknown status');
     }
 
     if (entry.lastStatus.error)

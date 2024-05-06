@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { PageData } from './$types';
+  import { page } from '$app/stores';
 
-  export let data: PageData;
-
-  console.log(data);
+  console.log($page);
 </script>
 
 <!-- {#if data.hostFailed} -->

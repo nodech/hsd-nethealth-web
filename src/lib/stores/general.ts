@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 
-import type { DNSGeneral, NodesGeneral } from '$lib/files';
+import type { NodesGeneral } from '$lib/files/nodes-general';
+import type { DNSGeneral } from '$lib/files/dns-general';
 
 function createNodesStore() {
   const { subscribe, set, update } = writable({

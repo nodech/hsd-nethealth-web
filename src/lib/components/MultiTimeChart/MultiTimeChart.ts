@@ -1,8 +1,6 @@
-import type { TimeChartOptionsPartial } from "../TimeChart/TimeChart";
-import type {
-  TimeEntries,
-  FileDefinition
-} from "$lib/files";
+import type { TimeChartOptionsPartial } from '../TimeChart/TimeChart';
+import type { TimeEntries } from '$lib/types';
+import type { FileDefinition } from '$lib/files/types';
 
 /*
  * Max width that we want to account for is 1k pxs.

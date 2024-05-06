@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy } from 'svelte';
 
-  import type { DNSStatus } from "$lib/files";
-  import { DNS_STATUS_BY_HOST } from "$lib/files";
+  import type { DNSStatus } from '$lib/types';
+  import { DNS_STATUS_BY_HOST } from '$lib/files/dns-general';
 
-  import { HOUR, formatDate } from "$lib/utils/time";
-  import { fetchFile } from "$lib/utils/fetch";
+  import { HOUR, formatDate } from '$lib/utils/time';
+  import { fetchFile } from '$lib/utils/fetch';
 
   let statuses: {[key: string]: DNSStatus | undefined} = {
     'hs-mainnet.bcoin.ninja': undefined,
@@ -33,18 +33,18 @@
 
   const getStatusColor = (status?: DNSStatus) => {
     if (!status || status.timestamp < stale) {
-      return "bg-gray-500";
+      return 'bg-gray-500';
     }
 
     if (status.lastStatus.info.error) {
-      return "bg-red-500";
+      return 'bg-red-500';
     }
 
     if (status.lastStatus.info.result != null) {
-      return "bg-green-500";
+      return 'bg-green-500';
     }
 
-    return "bg-gray-500";
+    return 'bg-gray-500';
   };
 
   const showLastStatus = (status?: DNSStatus) => {

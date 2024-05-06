@@ -17,7 +17,8 @@
   import { isStale, formatDateTime } from '$lib/utils/time';
   import { fetchFile } from '$lib/utils/fetch';
 
-  import { DNS_GENERAL, NODES_GENERAL } from '$lib/files';
+  import { DNS_GENERAL } from '$lib/files/dns-general';
+  import { NODES_GENERAL } from '$lib/files/nodes-general';
 
   import HSDLogo from '$lib/components/Logos/HSD.svelte';
   import Status from './Status.svelte';

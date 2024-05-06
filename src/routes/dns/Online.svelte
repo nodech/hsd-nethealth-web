@@ -1,8 +1,8 @@
 <script lang="ts">
-  import MultiTimeChart from "$lib/components/MultiTimeChart/MultiTimeChart.svelte";
-  import type { ViewMap } from "$lib/components/MultiTimeChart/MultiTimeChart";
-  import type { TimeEntries } from "$lib/files";
-  import type { TimeChartOptionsPartial } from "$lib/components/TimeChart/TimeChart";
+  import MultiTimeChart from '$lib/components/MultiTimeChart/MultiTimeChart.svelte';
+  import type { ViewMap } from '$lib/components/MultiTimeChart/MultiTimeChart';
+  import type { TimeEntries } from '$lib/types';
+  import type { TimeChartOptionsPartial } from '$lib/components/TimeChart/TimeChart';
 
   import {
     MONTH,
@@ -11,13 +11,13 @@
     MINUTE,
     formatDate,
     formatTime
-  } from "$lib/utils/time";
+  } from '$lib/utils/time';
 
   import {
     DNS_DAY_10m,
     DNS_WEEK_HOUR,
     DNS_5MONTHS_DAY
-  } from '$lib/files';
+  } from '$lib/files/dns-general';
 
   const defaultOptions = (tickWidth: number = 10): TimeChartOptionsPartial => {
     return {

@@ -9,7 +9,7 @@ export const YEAR = 365 * DAY;
 export function formatTime(time: number): string {
   const date = new Date(time);
   const options: Intl.DateTimeFormatOptions = {
-    timeStyle: "short",
+    timeStyle: 'short',
     hour12: false,
   };
 

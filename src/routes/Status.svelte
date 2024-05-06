@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { NodesGeneral, DNSGeneral } from "$lib/files";
-  import { isStale } from "$lib/utils/time";
+  import type { NodesGeneral } from '$lib/files/nodes-general';
+  import type { DNSGeneral } from '$lib/files/dns-general';
+  import { isStale } from '$lib/utils/time';
 
   export let nodes:NodesGeneral | null;
   export let dns:DNSGeneral | null;

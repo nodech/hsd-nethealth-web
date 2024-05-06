@@ -1,5 +1,5 @@
-import type { RecursivePartial } from "$lib/type-utils";
-import { HOUR, MINUTE, formatTime } from "$lib/utils/time";
+import type { RecursivePartial } from '$lib/type-utils';
+import { HOUR, MINUTE, formatTime } from '$lib/utils/time';
 
 const HOURS_12 = 12 * HOUR;
 const MINUTES_10 = 10 * MINUTE;
@@ -66,7 +66,7 @@ export const DEFAULT_VALUES: TimeChartOptions = {
   },
   YAxis: {
     show: true,
-    label: "Y-axis",
+    label: 'Y-axis',
     ignoreZero: false,
 
     maxValue: 100,
