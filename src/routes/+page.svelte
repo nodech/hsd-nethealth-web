@@ -6,6 +6,7 @@
   import ActiveNodes from './ActiveNodes.svelte';
   import ActiveNodesGraph from './ActiveNodesGraph.svelte'
   import Versions from './Versions.svelte';
+  import VersionsGraph from './VersionsGraph.svelte';
 
   const classes = 'm-3 md:m-0 md:mt-2';
 </script>
@@ -36,6 +37,11 @@
   <div class="{classes}">
     <div class="card">
       <Versions />
+    </div>
+  </div>
+  <div class="{classes} md:col-span-1 xl:col-span-2">
+    <div class="card">
+      <VersionsGraph />
     </div>
   </div>
 </div>

@@ -1,5 +1,4 @@
-import type { TimeChartOptionsPartial } from '../TimeChart/TimeChart';
-import type { TimeEntries } from '$lib/types';
+import type { TimeChartOptionsPartial, TimeChartData } from '../TimeChart/TimeChart';
 import type { FileDefinition } from '$lib/files/types';
 
 /*
@@ -7,6 +6,9 @@ import type { FileDefinition } from '$lib/files/types';
  */
 
 export type ViewLabel = string;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type data2TimeChartFn = (data: any) => TimeChartData;
 
 /**
  * Definition for the specific View of the MultiTimeChart.
@@ -20,7 +22,9 @@ export type ViewDefinition = {
 
   timeFormatFn: (time: number) => string;
   getMinTimeFn: () => number;
-  getMaxValueFn: (entries: TimeEntries) => number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getMaxValueFn: (entries: any) => number;
+  data2TimeChartFn: data2TimeChartFn;
 };
 
 export type ViewMap = {

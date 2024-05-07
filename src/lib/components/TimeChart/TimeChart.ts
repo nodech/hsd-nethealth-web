@@ -138,11 +138,11 @@ export type TimeBox = {
 
 type ByIndexes = {
   [index: number]: {
-    posx: number,
-    posy: number,
-    value: number,
-    time: number,
-    index: number
+    posx: number;
+    posy: number;
+    value: number;
+    time: number;
+    index: number;
   };
 };
 

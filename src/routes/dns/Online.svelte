@@ -2,19 +2,20 @@
   import MultiTimeChart from '$lib/components/MultiTimeChart/MultiTimeChart.svelte';
   import type { ViewMap } from '$lib/components/MultiTimeChart/MultiTimeChart';
   import type { TimeEntries } from '$lib/types';
-  import type { TimeChartOptionsPartial } from '$lib/components/TimeChart/TimeChart';
+  import type { TimeChartOptionsPartial, TimeChartData } from '$lib/components/TimeChart/TimeChart';
 
   import {
     MONTH,
     DAY,
     HOUR,
     MINUTE,
+    WEEK,
     formatDate,
     formatTime
   } from '$lib/utils/time';
 
   import {
-    DNS_DAY_10m,
+    DNS_DAY_10M,
     DNS_WEEK_HOUR,
     DNS_5MONTHS_DAY
   } from '$lib/files/dns-general';
@@ -52,16 +53,31 @@
     return max;
   };
 
+
+  function data2TimeChart(data: TimeEntries): TimeChartData {
+    const outData: TimeChartData = {
+      online: {
+        style: {
+          stroke: 'green'
+        },
+        data: data.data
+      }
+    };
+
+    return outData;
+  }
+
   const views: ViewMap = {
     day: {
       name: 'Day',
       generalOptions: defaultOptions(10),
       tickSize: 10 * MINUTE,
-      fileDefinition: DNS_DAY_10m,
+      fileDefinition: DNS_DAY_10M,
 
       getMinTimeFn: () => Date.now() - 24 * HOUR,
       getMaxValueFn: maxValue,
-      timeFormatFn: formatTime
+      timeFormatFn: formatTime,
+      data2TimeChartFn: data2TimeChart
     },
     week: {
       name: 'Week',
@@ -69,7 +85,7 @@
       tickSize: 1 * HOUR,
       fileDefinition: DNS_WEEK_HOUR,
 
-      getMinTimeFn: () => Date.now() - MONTH,
+      getMinTimeFn: () => Date.now() - WEEK,
       getMaxValueFn: maxValue,
       timeFormatFn: (value: number) => {
         return formatDate(value, {
@@ -77,7 +93,8 @@
           day: 'numeric',
           hour: 'numeric'
         });
-      }
+      },
+      data2TimeChartFn: data2TimeChart
     },
     months5: {
       name: '5 Months',
@@ -93,7 +110,8 @@
           day: 'numeric',
           year: 'numeric'
         });
-      }
+      },
+      data2TimeChartFn: data2TimeChart
     }
   };
 </script>

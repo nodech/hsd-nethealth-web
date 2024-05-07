@@ -1,8 +1,13 @@
 <script lang="ts">
+  import { modeCurrent } from '@skeletonlabs/skeleton';
   import MultiTimeChart from '$lib/components/MultiTimeChart/MultiTimeChart.svelte';
   import type { ViewMap } from '$lib/components/MultiTimeChart/MultiTimeChart';
   import type { UpCounts } from '$lib/types';
   import type { TimeChartOptionsPartial, TimeChartData } from '$lib/components/TimeChart/TimeChart';
+  import {
+    getVersionColor,
+    getCSSFromHSL
+  } from '$lib/utils/color';
 
   import {
     MINUTE,
@@ -13,6 +18,12 @@
     formatTime,
     formatDate
   } from '$lib/utils/time';
+
+  let isWhite = true;
+
+  $: {
+    isWhite = $modeCurrent;
+  }
 
   import {
     NODES_ACTIVE_10M,
@@ -45,8 +56,10 @@
     let max = 0;
 
     for (const entry of Object.values(data.data)) {
-      if (entry.total > max) {
-        max = entry.total;
+      for (const versionCount of Object.values(entry.version)) {
+        if (versionCount > max) {
+          max = versionCount;
+        }
       }
     }
 
@@ -61,39 +74,35 @@
   };
 
   const data2TimeChart = (data: DataFormat): TimeChartData => {
-    const outData: TimeChartData = {
-      online: {
-        style: {
-          stroke: '#33a02c'
-        },
-        data: {}
-      },
-      full: {
-        style: {
-          stroke: '#1f78b4'
-        },
-        data: {}
-      },
-      spv: {
-        style: {
-          stroke: '#a6cee3'
-        },
-        data: {}
-      },
-      fullTree: {
-        style: {
-          stroke: '#b2df8a'
-        },
-        data: {}
-      },
-    };
+    const outData: TimeChartData = {};
 
     for (const [ts, entry] of Object.entries(data.data)) {
       const tsn = Number(ts);
-      outData.online.data[tsn] = entry.total;
-      outData.spv.data[tsn] = entry.spv;
-      outData.full.data[tsn] = entry.total - entry.pruned;
-      outData.fullTree.data[tsn] = entry.total - entry.compacted;
+      const versions = entry.version;
+
+      for (const [version, count] of Object.entries(versions)) {
+        const verNumbers = version.split('.').map(Number);
+        const semVer = {
+          major: verNumbers[0],
+          minor: 0,
+          patch: 0
+        };
+        const majorVersion = `v${verNumbers[0]}`;
+
+        if (!outData[majorVersion]) {
+          outData[majorVersion] = {
+            style: {
+              stroke: getCSSFromHSL(getVersionColor(semVer, isWhite))
+            },
+            data: {}
+          };
+        }
+
+        if (!outData[majorVersion].data[tsn])
+          outData[majorVersion].data[tsn] = 0;
+
+        outData[majorVersion].data[tsn] += count;
+      }
     }
 
     return outData;
@@ -149,4 +158,5 @@
 </script>
 
 <!-- <div class="min-h-14 flex items-center justify-center text-2xl font-bold">Active Nodes Graph</div> -->
-<MultiTimeChart title="Active" defaultView="day" views={views} />
+<MultiTimeChart title="Versions" defaultView="day" views={views} />
+

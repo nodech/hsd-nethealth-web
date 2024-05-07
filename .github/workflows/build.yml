@@ -21,9 +21,6 @@ jobs:
     - name: Run lint
       run: npm run lint
 
-    - name: Run check
-      run: npm run check
-
   check:
     name: TS Check
     runs-on: ubuntu-latest

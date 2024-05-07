@@ -12,7 +12,7 @@ export const DNS_GENERAL: FileDefinition = {
   REFETCH_INTERVAL: 1000 * 60 * 10
 };
 
-export const DNS_DAY_10m: FileDefinition = {
+export const DNS_DAY_10M: FileDefinition = {
   ID: 'app:dns-day-10m',
   FILE: () => './data/dns/up-day-10m.json',
   REFETCH_INTERVAL: 1000 * 60 * 10

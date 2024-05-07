@@ -21,7 +21,6 @@
 
   import { fetchFile } from '$lib/utils/fetch';
   import type { FileDefinition } from '$lib/files/types';
-  import type { TimeEntries } from '$lib/types';
 
   // Props.
   export let title: string;
@@ -98,19 +97,6 @@
     timeChartDefaults
   );
 
-  function data2TimeChart(data: TimeEntries): TimeChartData {
-    const outData: TimeChartData = {
-      online: {
-        style: {
-          stroke: 'green'
-        },
-        data: data.data
-      }
-    };
-
-    return outData;
-  }
-
   async function fetchData(fileDef: FileDefinition) {
     loadState.loading = true;
     loadState.controller.abort();
@@ -118,11 +104,11 @@
     const signal = loadState.controller.signal;
 
     try {
-      const out: TimeEntries = await fetchFile(fileDef, undefined, signal);
+      const out = await fetchFile(fileDef, undefined, signal);
       lastMaxValue = selectedView.getMaxValueFn(out);
       selectedTimeChartOptions.YAxis.maxValue = lastMaxValue;
 
-      loadState.data = data2TimeChart(out);
+      loadState.data = selectedView.data2TimeChartFn(out);
     } finally {
       loadState.loading = false;
       loadState.controller = new AbortController();
@@ -154,8 +140,9 @@
 </script>
 
 <div class="flex justify-end items-center w-full">
+  <div class="hidden xl:block xl:flex-1"></div>
   <div class="mx-auto text-2xl font-bold">{title}</div>
-  <div class="flex flex-nowrap">
+  <div class="xl:flex-1 xl:justify-end flex flex-nowrap">
     <div class="flex-initial grow-0">
       <RadioGroup display="flex" border="border-token border-surface-200-700-token" background="">
         {#each Object.keys(views) as viewName}

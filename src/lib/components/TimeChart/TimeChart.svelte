@@ -157,7 +157,7 @@
         indexLookups[data.index].push({
           name: name,
           value: data.value,
-          time: data.time
+          time: data.time,
         });
       }
     }
@@ -175,8 +175,15 @@
 
     let info = `<div>Time: ${formatTimeFn(time)}</div>`;
 
+    entries.sort((a, b) => b.value - a.value);
+
     for (const entry of entries) {
-      info += `<div>${entry.name}: ${entry.value}</div>`
+      const color = dataEntries[entry.name].stroke || 'rgba(var(--theme-font-color-dark))';
+      info += `<div>
+        <div class="badge variant-soft-primary"><i class="btn-icon w-2 text-sm mr-2" style="background-color: ${color}"> </i>
+          ${entry.name}: ${entry.value}
+        </div>
+      </div>`;
     }
 
     return info;
