@@ -22,7 +22,7 @@
       <input class="p-2 pt-1 pb-1" type="text" bind:value={hostValue} />
       <a
         class="variant-filled-secondary"
-        href="?port={port}&hostname={hostValue}"
+        href="?port={port}&host={hostValue}"
       >Go</a>
     </div>
   </div>
