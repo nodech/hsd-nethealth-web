@@ -48,6 +48,7 @@
 
     loadState.loading = true;
     loadState.failed = false;
+    loadState.data = null;
 
     try {
       const data = await fetchFile(NODE, undefined, host);
@@ -79,6 +80,8 @@
   const classes = 'm-3 md:m-0 md:mt-2';
 </script>
 
+<Ports host={host} port={port} ports={loadState?.data?.ports} />
+
 {#if loadState.failed}
   <div class="flex justify-center">
     <p class="text-red-500">Failed to get IP address "{host}"</p>
@@ -88,8 +91,6 @@
     <p class="text-yellow-500">Loading IP address {host}...</p>
   </div>
 {:else if loadState.data && host}
-<Ports host={host} port={port} ports={loadState.data.ports} />
-
 <div class="md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-2">
   <div class="{classes}">
     <div class="card">

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { NodesGeneralStatuses } from '$lib/types';
   import type { NodeGeneralStatuses } from './types';
   import { formatNumber } from '$lib/utils/format';
   import { formatDateTime } from '$lib/utils/time';
@@ -8,10 +9,20 @@
   export let host: string;
   export let port: number;
 
-  const chosenStatus = status[port];
-  const isUp = chosenStatus.isUp;
-  const lastStatus = NodeEntry.fromJSON(chosenStatus.lastStatus);
-  const lastUp = chosenStatus.lastUp ? NodeEntry.fromJSON(chosenStatus.lastUp) : undefined;
+  let chosenStatus: NodesGeneralStatuses | undefined;
+  let isUp = false;
+  let lastStatus: NodeEntry;
+  let lastUp: NodeEntry | undefined;
+
+  $: {
+    chosenStatus = status[port];
+
+    if (chosenStatus) {
+      isUp = chosenStatus.isUp;
+      lastStatus = NodeEntry.fromJSON(chosenStatus.lastStatus);
+      lastUp = chosenStatus.lastUp ? NodeEntry.fromJSON(chosenStatus.lastUp) : undefined;
+    }
+  }
 
   const keyClasses = 'flex justify-center';
   const valueClasses = 'flex justify-center';
@@ -22,6 +33,11 @@
   {host}:{port}
 </div>
 
+{#if !chosenStatus}
+  <div class="flex items-center justify-center text-2xl font-bold">
+    No data
+  </div>
+{:else}
 <div class="grid grid-cols-2">
   <div class="group">
     <div class="{keyClasses}">Last check</div>
@@ -152,6 +168,7 @@
     {/if}
   {/if}
 </div>
+{/if}
 
 <style>
 .group {

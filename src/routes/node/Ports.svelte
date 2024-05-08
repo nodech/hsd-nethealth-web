@@ -1,21 +1,24 @@
 <script lang="ts">
-  export let host: string;
-  export let port: number;
-  export let ports: number[];
+  export let host: string | null;
+  export let port: number | null;
+  export let ports: number[] | null | undefined;
 
+  console.log(ports);
   let hostValue = host;
 </script>
 
 <div class="flex mt-2">
   <div class="mt-2 flex-1">
-    Avilable ports:
-    {#each ports as c}
-      <a
-        href="?port={c}&host={host}"
-        class="chip {port === c ? 'variant-filled' : 'variant-soft'}">
-        <span>{c}</span>
-      </a>
-    {/each}
+    {#if ports}
+      Avilable ports:
+      {#each ports as c}
+        <a
+          href="?port={c}&host={host}"
+          class="chip {port === c ? 'variant-filled' : 'variant-soft'}">
+          <span>{c}</span>
+        </a>
+      {/each}
+    {/if}
   </div>
   <div>
     <div class="input-group input-group-divider grid-cols-[1fr_auto]">

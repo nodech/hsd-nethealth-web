@@ -214,7 +214,6 @@ export class TimeLine {
   getTickBoxes(): TimeBox[] {
     const boxes: TimeBox[] = [];
 
-    console.log(this.max, this.min, this.diff, this.tickSize);
     for (let i = 0; i < this.ticks; i++) {
       boxes.push(this.getBoxAt(i));
     }
