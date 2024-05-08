@@ -105,14 +105,20 @@
               class="{allClasses} {itemClasses} !justify-end"
               class:text-red-300={!entry.isUp}
               class:text-green-300={entry.isUp}
-            >:{entry.lastStatus.port}</div>
+            >
+              <a href="./node?port={entry.lastStatus.port}&host={entry.lastStatus.host}">
+                  :{entry.lastStatus.port}
+              </a>
+            </div>
           {:else}
             <div
               class="{allClasses} {itemClasses} !justify-end"
               class:text-red-300={!entry.isUp}
               class:text-green-300={entry.isUp}
             >
-              {entry.lastStatus.hostPort}
+              <a href="./node?port={entry.lastStatus.port}&host={entry.lastStatus.host}">
+                {entry.lastStatus.hostPort}
+              </a>
             </div>
           {/if}
 

@@ -190,6 +190,10 @@
   const treeFormat = (label: string, value: number) => `v${label} - ${percent(value, total)} (${value})`;
 
   let versions: UpCounts['version'] = {};
+  let sorted: {
+    version: string;
+    count: number;
+  }[] = [];
   let versionTree: VersionTreeEntry[] = [];
   let total = 0;
   let conicStops: ConicStop[] = [];
@@ -205,6 +209,16 @@
     versionTree = indexTree(versions, isWhite);
     conicStops = genConicStops(versionTree, total);
     loading = false;
+    sorted = [];
+
+    for (const version of Object.keys(versions)) {
+      sorted.push({
+        version: version,
+        count: versions[version]
+      });
+    }
+
+    sorted.sort((a, b) => b.count - a.count);
   }
 </script>
 
@@ -263,11 +277,11 @@
       </tr>
     </thead>
     <tbody>
-      {#each Object.keys(versions) as version}
+      {#each sorted as entry}
         <tr>
-          <td>{version}</td>
-          <td>{versions[version]}</td>
-          <td>{percent(versions[version], total)}</td>
+          <td>{entry.version}</td>
+          <td>{entry.count}</td>
+          <td>{percent(entry.count, total)}</td>
         </tr>
       {/each}
     </tbody>

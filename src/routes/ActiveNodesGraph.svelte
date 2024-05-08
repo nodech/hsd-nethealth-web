@@ -26,7 +26,7 @@
         height: 300,
       },
       YAxis: {
-        label: 'Online',
+        label: 'Online Nodes',
         style: {
           marginRight: 40,
           fontSize: 11

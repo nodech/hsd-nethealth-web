@@ -9,8 +9,8 @@ export async function fetchJSON(url: string, signal?: AbortSignal) {
   return response.json();
 }
 
-export async function fetchFile(file: FileDefinition, id?: string, signal?: AbortSignal) {
-  return fetchJSON(file.FILE(id), signal);
+export async function fetchFile(file: FileDefinition, signal?: AbortSignal, ...args: string[]) {
+  return fetchJSON(file.FILE(...args), signal);
 }
 
 export async function fetchData(url: string, signal?: AbortSignal) {

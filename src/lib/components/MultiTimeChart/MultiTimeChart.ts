@@ -25,6 +25,8 @@ export type ViewDefinition = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getMaxValueFn: (entries: any) => number;
   data2TimeChartFn: data2TimeChartFn;
+
+  fetchArgs?: string[];
 };
 
 export type ViewMap = {

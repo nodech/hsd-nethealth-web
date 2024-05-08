@@ -27,11 +27,23 @@
   export let defaultView: ViewLabel;
   export let views: ViewMap;
 
-  const viewNames: ViewLabel[] = Object.keys(views);
+  let selectedViewName: ViewLabel = defaultView;
+  let selectedView: ViewDefinition = views[selectedViewName];
+  let lastMaxValue: number = 0;
+  let loadState: {
+    interval: ReturnType<typeof setInterval> | null;
+    data: TimeChartData | null;
+    loading: boolean;
+    controller: AbortController;
+  } = {
+    interval: null,
+    data: null,
+    loading: true,
+    controller: new AbortController()
+  };
 
-  if (!viewNames.length) {
-    throw new Error('No views provided');
-  }
+  let selectedTimeChartOptions: TimeChartOptions;
+  let viewNames: ViewLabel[];
 
   const timeChartDefaults: TimeChartOptions = timeChartOptions({
     style: {
@@ -52,23 +64,6 @@
     }
   });
 
-  let selectedViewName: ViewLabel = defaultView;
-  let selectedView: ViewDefinition = views[selectedViewName];
-  let lastMaxValue: number = 0;
-  let loadState: {
-    interval: ReturnType<typeof setInterval> | null;
-    data: TimeChartData | null;
-    loading: boolean;
-    controller: AbortController;
-  } = {
-    interval: null,
-    data: null,
-    loading: true,
-    controller: new AbortController()
-  };
-
-  let selectedTimeChartOptions: TimeChartOptions;
-
   function selectView(view: ViewLabel) {
     selectedViewName = view;
     selectedView = views[view];
@@ -86,17 +81,6 @@
     }
   }
 
-  if (!selectedView && viewNames.length > 0) {
-    selectView(viewNames[0]);
-  } else if (selectView) {
-    selectView(selectedViewName);
-  }
-
-  selectedTimeChartOptions = timeChartOptions(
-    selectedView.generalOptions,
-    timeChartDefaults
-  );
-
   async function fetchData(fileDef: FileDefinition) {
     loadState.loading = true;
     loadState.controller.abort();
@@ -104,7 +88,13 @@
     const signal = loadState.controller.signal;
 
     try {
-      const out = await fetchFile(fileDef, undefined, signal);
+      let out;
+
+      if (selectedView.fetchArgs)
+        out = await fetchFile(fileDef, signal, ...selectedView.fetchArgs);
+      else
+        out = await fetchFile(fileDef, signal);
+
       lastMaxValue = selectedView.getMaxValueFn(out);
       selectedTimeChartOptions.YAxis.maxValue = lastMaxValue;
 
@@ -112,6 +102,22 @@
     } finally {
       loadState.loading = false;
       loadState.controller = new AbortController();
+    }
+  }
+
+  $: {
+    viewNames = Object.keys(views);
+
+    if (!viewNames.length) {
+      throw new Error('No views provided');
+    }
+  }
+
+  $: {
+    if (!selectedView && viewNames.length > 0) {
+      selectView(viewNames[0]);
+    } else if (selectedView) {
+      selectView(selectedViewName);
     }
   }
 

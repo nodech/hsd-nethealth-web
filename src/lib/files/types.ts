@@ -1,4 +1,4 @@
-export type FilePath = ((input?: string) => string);
+export type FilePath = ((...args: string[]) => string);
 
 export type FileDefinition = {
   ID: `${string}:${string}`,

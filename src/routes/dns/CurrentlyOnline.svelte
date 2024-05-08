@@ -24,7 +24,7 @@
 
   const fetchStatus = async (id: string) => {
     try {
-      const data = await fetchFile(DNS_STATUS_BY_HOST, id);
+      const data = await fetchFile(DNS_STATUS_BY_HOST, undefined, id);
       statuses = { ...statuses, [id]: data };
     } catch (error) {
       console.error(error);
