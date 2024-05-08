@@ -138,8 +138,8 @@
             <div class="{allClasses} {itemClasses}">
               <i
                 class="btn-icon w-2"
-                class:bg-green-500={!entry.lastStatus.result?.hasBloom()}
-                class:bg-red-500={entry.lastStatus.result?.hasBloom()}
+                class:bg-green-500={entry.lastStatus.result?.hasBloom()}
+                class:bg-red-500={!entry.lastStatus.result?.hasBloom()}
                 />
             </div>
             <div class="{allClasses} {itemClasses}">
