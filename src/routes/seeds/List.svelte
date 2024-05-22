@@ -104,6 +104,7 @@
             <div
               class="{allClasses} {itemClasses} !justify-end"
               class:text-red-300={!entry.isUp}
+              class:opacity-60={!entry.isUp}
               class:text-green-300={entry.isUp}
             >
               <a href="./node?port={entry.lastStatus.port}&host={entry.lastStatus.host}">
@@ -114,6 +115,7 @@
             <div
               class="{allClasses} {itemClasses} !justify-end"
               class:text-red-300={!entry.isUp}
+              class:opacity-60={!entry.isUp}
               class:text-green-300={entry.isUp}
             >
               <a href="./node?port={entry.lastStatus.port}&host={entry.lastStatus.host}">
@@ -123,10 +125,10 @@
           {/if}
 
           {#if !entry.isUp}
-            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-red-500" /></div>
-            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-red-500" /></div>
-            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-red-500" /></div>
-            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-red-500" /></div>
+            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-gray-500" /></div>
+            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-gray-500" /></div>
+            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-gray-500" /></div>
+            <div class="{allClasses} {itemClasses}"><i class="btn-icon w-2 bg-gray-500" /></div>
           {:else}
             <div class="{allClasses} {itemClasses}">
               <i
