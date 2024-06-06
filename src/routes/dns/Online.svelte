@@ -41,19 +41,6 @@
     };
   };
 
-  const maxValue = (entries: TimeEntries) => {
-    let max = 0;
-
-    for (const value of Object.values(entries.data)) {
-      if (value > max) {
-        max = value;
-      }
-    }
-
-    return max;
-  };
-
-
   function data2TimeChart(data: TimeEntries): TimeChartData {
     const outData: TimeChartData = {
       online: {
@@ -75,7 +62,6 @@
       fileDefinition: DNS_DAY_10M,
 
       getMinTimeFn: () => Date.now() - 24 * HOUR,
-      getMaxValueFn: maxValue,
       timeFormatFn: formatTime,
       data2TimeChartFn: data2TimeChart
     },
@@ -86,7 +72,6 @@
       fileDefinition: DNS_WEEK_HOUR,
 
       getMinTimeFn: () => Date.now() - WEEK,
-      getMaxValueFn: maxValue,
       timeFormatFn: (value: number) => {
         return formatDate(value, {
           month: '2-digit',
@@ -103,7 +88,6 @@
       fileDefinition: DNS_5MONTHS_DAY,
 
       getMinTimeFn: () => Date.now() - 5 * MONTH,
-      getMaxValueFn: maxValue,
       timeFormatFn: (value: number) => {
         return formatDate(value, {
           month: '2-digit',

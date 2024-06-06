@@ -8,12 +8,12 @@
   import type {
     ViewDefinition,
     ViewLabel,
-    ViewMap
+    ViewMap,
   } from './MultiTimeChart';
 
   import type {
     TimeChartOptions,
-    TimeChartData
+    TimeChartData,
   } from '$lib/components/TimeChart/TimeChart';
 
   import { timeChartOptions } from '$lib/components/TimeChart/TimeChart';
@@ -81,6 +81,21 @@
     }
   }
 
+  function defaultMaxValueFn(data: TimeChartData): number {
+    let max = 0;
+
+    for (const entries of Object.values(data)) {
+      const data = entries.data;
+
+      for (const value of Object.values(data)) {
+        if (value > max)
+          max = value;
+      }
+    }
+
+    return max;
+  }
+
   async function fetchData(fileDef: FileDefinition) {
     loadState.loading = true;
     loadState.controller.abort();
@@ -95,10 +110,11 @@
       else
         out = await fetchFile(fileDef, signal);
 
-      lastMaxValue = selectedView.getMaxValueFn(out);
-      selectedTimeChartOptions.YAxis.maxValue = lastMaxValue;
-
       loadState.data = selectedView.data2TimeChartFn(out);
+      lastMaxValue = selectedView.getMaxValueFn
+        ? selectedView.getMaxValueFn(loadState.data)
+        : defaultMaxValueFn(loadState.data);
+      selectedTimeChartOptions.YAxis.maxValue = lastMaxValue;
     } finally {
       loadState.loading = false;
       loadState.controller = new AbortController();

@@ -52,20 +52,6 @@
     };
   };
 
-  const maxValue = (data: DataFormat) => {
-    let max = 0;
-
-    for (const entry of Object.values(data.data)) {
-      for (const versionCount of Object.values(entry.version)) {
-        if (versionCount > max) {
-          max = versionCount;
-        }
-      }
-    }
-
-    return max;
-  };
-
   type DataFormat = {
     timestamp: number;
     data: {
@@ -116,7 +102,6 @@
       fileDefinition: NODES_ACTIVE_10M,
 
       getMinTimeFn: () => Date.now() - 24 * HOUR,
-      getMaxValueFn: maxValue,
       timeFormatFn: formatTime,
       data2TimeChartFn: data2TimeChart,
     },
@@ -127,7 +112,6 @@
       fileDefinition: NODES_ACTIVE_HOUR,
 
       getMinTimeFn: () => Date.now() - WEEK,
-      getMaxValueFn: maxValue,
       timeFormatFn: (value: number) => {
         return formatDate(value, {
           month: '2-digit',
@@ -144,7 +128,6 @@
       fileDefinition: NODES_ACTIVE_DAY,
 
       getMinTimeFn: () => Date.now() - MONTH * 5,
-      getMaxValueFn: maxValue,
       timeFormatFn: (value: number) => {
         return formatDate(value, {
           month: '2-digit',
