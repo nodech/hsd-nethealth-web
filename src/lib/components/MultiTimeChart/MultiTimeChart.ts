@@ -10,21 +10,6 @@ export type ViewLabel = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type data2TimeChartFn = (data: any) => TimeChartData;
 
-export const defaultMaxValueFn = (data: TimeChartData): number => {
-  let max = 0;
-
-  for (const entries of Object.values(data)) {
-    const data = entries.data;
-
-    for (const value of Object.values(data)) {
-      if (value > max)
-        max = value;
-    }
-  }
-
-  return max;
-};
-
 /**
  * Definition for the specific View of the MultiTimeChart.
  */
