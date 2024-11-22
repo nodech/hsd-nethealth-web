@@ -27,7 +27,7 @@ export const NODES_GENERAL: FileDefinition = {
   FILE: () => './data/nodes/general.json',
   REFETCH_INTERVAL: 1000 * 60 * 10, // 10 minutes
   // REFETCH_INTERVAL: 1000 * 60 * 5, // 5 minutes
-  // REFETCH_INTERVAL: 1000 * 10, // 10 seconds
+  // REFETCH_INTERVAL: 1000 * 10 * 1, // 10 seconds
 };
 
 export const NODES_ACTIVE_10M: FileDefinition = {
@@ -46,4 +46,11 @@ export const NODES_ACTIVE_DAY: FileDefinition = {
   ID: 'app:seednodes-active-day',
   FILE: () => './data/nodes/active-day-5month.json',
   REFETCH_INTERVAL: 1000 * 60 * 10,
+};
+
+export const NODES_ONLINE: FileDefinition = {
+  ID: 'app:online-nodes',
+  FILE: () => './data/nodes/online-now.json',
+  REFETCH_INTERVAL: 1000 * 60 * 10,
+  // REFETCH_INTERVAL: 1000 * 60 * 1,
 };

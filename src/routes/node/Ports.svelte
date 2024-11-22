@@ -3,7 +3,6 @@
   export let port: number | null;
   export let ports: number[] | null | undefined;
 
-  console.log(ports);
   let hostValue = host;
 </script>
 

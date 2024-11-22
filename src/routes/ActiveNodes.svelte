@@ -19,7 +19,9 @@
   }
 </script>
 
-<div class="min-h-14 flex items-center justify-center text-2xl font-bold">Active Nodes</div>
+<div class="min-h-14 flex items-center justify-center text-2xl font-bold">
+  <a href="./online">Active Nodes</a>
+</div>
 <div class="table-container">
   {#if loading || !upCounts}
     <div class="text-center">Loading...</div>
