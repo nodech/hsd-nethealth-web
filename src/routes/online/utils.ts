@@ -18,37 +18,48 @@ export const defaultFilters: Filters = {
   brontide: BoolFilterAll
 };
 
-export function getFilters(uhash: string): Filters {
-  const hashFilters = parseHash(uhash);
+export function getFilters(params: URLSearchParams): Filters {
+  const parsedFilters = getFiltersUrl(params);
 
-  if (!hashFilters)
+  if (!parsedFilters)
     return {...defaultFilters};
 
-  return {
+  const final =  {
     ...defaultFilters,
-    ...hashFilters
+    ...parsedFilters
   };
+
+  console.log('final WTF', final);
+  return final;
 }
 
-export function parseHash(uhash: string): Filters | null {
-  try {
-    const hash = uhash.slice(1);
+export function getFiltersUrl(params: URLSearchParams): Partial<Filters> {
+  const result: Partial<Filters> = {};
 
-    if (!hash)
-      return null;
+  parseBoolCheck(result, params, 'sync');
+  parseBoolCheck(result, params, 'spv');
+  parseBoolCheck(result, params, 'fullnode');
+  parseBoolCheck(result, params, 'tree');
 
-    const decoded = atob(hash);
-    const json = JSON.parse(decoded);
-    return json;
-  } catch (e) {
-    return null;
+  parseBoolCheck(result, params, 'generated');
+  parseBoolCheck(result, params, 'main');
+  parseBoolCheck(result, params, 'brontide');
+
+  return result;
+}
+
+export function getFiltersSearchParams(filters: Filters): URLSearchParams {
+  const params = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (value === BoolFilterAll || typeof value === 'undefined')
+      continue;
+
+    console.log(key, value);
+    params.set(key, value.toString());
   }
-}
 
-export function setHash(filters: Filters): void {
-  const json = JSON.stringify(filters);
-  const base64 = btoa(json);
-  window.location.hash = base64;
+  return params;
 }
 
 export function filterCheck(state: BoolFilterState, value: boolean) {
@@ -59,4 +70,25 @@ export function filterCheck(state: BoolFilterState, value: boolean) {
     return value === true;
 
   return true;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseBoolCheck(obj: any, params: URLSearchParams, name: string): BoolFilterState | undefined {
+  const value = params.get(name);
+
+  if (!value)
+    return;
+
+  if (value === '0') {
+    obj[name] = BoolFilterExclude;
+    return;
+  }
+
+  if (value === '1') {
+    obj[name] = BoolFilterInclude;
+  }
+
+  if (value === '-1') {
+    obj[name] = BoolFilterAll;
+  }
 }

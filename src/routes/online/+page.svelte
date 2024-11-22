@@ -117,7 +117,7 @@
   fetchOnline().catch(console.error);
 
   $: {
-    filters = getFilters($page.url.hash);
+    filters = getFilters($page.url.searchParams);
   }
 
   $: {
