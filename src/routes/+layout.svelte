@@ -99,9 +99,12 @@
         </a>
         <span class="text-xs sm:text-sm md:text-xl uppercase" title="Reachable Nodes">Nodes:
           {#if $nodes.general?.upCounts?.total}
-            <span
+            <a
+              href="/online"
               class:text-green-500={!isStale($nodes?.general?.timestamp)}
-            > {$nodes?.general?.upCounts?.total}</span>
+            >
+              {$nodes?.general?.upCounts?.total}
+            </a>
           {:else}
             -
           {/if}
