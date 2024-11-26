@@ -129,6 +129,10 @@
     <div class="flex justify-left min-h-5">
       {#if $nodes?.general}
         <div class="text-sm text-gray-500">
+          <span class="mr-2">
+            Gen Version: <span class="text-primary-500">/hsd:{$nodes.general.version}/</span>
+          </span>
+
           Last Updated:
           <span
             class:text-green-800={!isStale($nodes.general.timestamp)}
