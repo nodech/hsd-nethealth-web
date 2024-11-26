@@ -29,7 +29,6 @@ export function getFilters(params: URLSearchParams): Filters {
     ...parsedFilters
   };
 
-  console.log('final WTF', final);
   return final;
 }
 

@@ -96,8 +96,9 @@
 
       list = data2list(data.data);
       finalList = applySort(applyFilters(list, filters));
-    } catch (e) {
-      err = e.message || 'Failed';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      err = e?.message || 'Failed';
     } finally {
       loading = false;
     }
