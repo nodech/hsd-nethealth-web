@@ -9,7 +9,7 @@
 
   let statuses: {[key: string]: DNSStatus | undefined} = {
     'hs-mainnet.bcoin.ninja': undefined,
-    'seed.easyhandshake.com': undefined
+    'seed.htools.work': undefined
   };
 
   const formatOptions: Intl.DateTimeFormatOptions = {
